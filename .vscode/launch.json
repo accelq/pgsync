@@ -1,0 +1,63 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Bootstrap Full Teardown",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/bootstrap",
+            "console": "integratedTerminal",
+            "args": ["--config", "C:\\accelq\\AQReporting\\examples\\singleSchema.json", "-t"],
+            "autoReload": {
+              "enable": true
+            }
+        },
+        {
+            "name": "Bootstrap Partial Teardown",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/bootstrap",
+            "console": "integratedTerminal",
+            "args": ["--config", "C:\\accelq\\AQReporting\\examples\\singleSchema.json", "-t", "-p"],
+            "autoReload": {
+              "enable": true
+            }
+        },
+        {
+            "name": "Bootstrap Full",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/bootstrap",
+            "console": "integratedTerminal",
+            "args": ["--config", "C:\\accelq\\AQReporting\\examples\\singleSchema.json"],
+            "autoReload": {
+              "enable": true
+            }
+        },
+        {
+            "name": "Bootstrap Parital",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/bootstrap",
+            "console": "integratedTerminal",
+            "args": ["--config", "C:\\accelq\\AQReporting\\examples\\singleSchema.json", "-p"],
+            "autoReload": {
+              "enable": true
+            }
+        },
+        {
+            "name": "PGSync",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/pgsync",
+            "console": "integratedTerminal",
+            "args": ["--config", "C:\\accelq\\AQReporting\\examples\\singleSchema.json"],
+            "autoReload": {
+              "enable": true
+            }
+        },
+    ]
+}

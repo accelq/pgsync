@@ -27,6 +27,13 @@ logger = logging.getLogger(__name__)
     is_flag=True,
     help="Teardown database triggers and replication slots",
 )
+@click.option(
+    "--partial",
+    "-p",
+    is_flag=True,
+    default=False,
+    help="Apply across schemas mentioned in schema.json file",
+)
 @click.option("--user", "-u", help="PG_USER overide")
 @click.option(
     "--verbose",
@@ -35,7 +42,7 @@ logger = logging.getLogger(__name__)
     default=False,
     help="Turn on verbosity",
 )
-def main(teardown, config, user, password, host, port, verbose):
+def main(teardown, config, user, password, host, port, verbose, partial):
     """Application onetime Bootstrap."""
     kwargs: dict = {
         "user": user,
@@ -59,9 +66,9 @@ def main(teardown, config, user, password, host, port, verbose):
             document, verbose=verbose, repl_slots=False, **kwargs
         )
         if teardown:
-            sync.teardown()
+            sync.teardown(partial=partial)
             continue
-        sync.setup()
+        sync.setup(partial=partial)
         logger.info(f"Bootstrap: {sync.database}")
 
 

@@ -103,7 +103,7 @@ class Sync(Base, metaclass=Singleton):
         self.query_builder: QueryBuilder = QueryBuilder(verbose=verbose)
         self.count: dict = dict(xlog=0, db=0, redis=0)
 
-    def validate(self, repl_slots: bool = True) -> None:
+    def validate(self, repl_slots: bool = True, partial: bool = False) -> None:
         """Perform all validation right away."""
 
         # ensure v2 compatible schema
@@ -179,7 +179,7 @@ class Sync(Base, metaclass=Singleton):
                         f"{MATERIALIZED_VIEW}. Please re-run bootstrap."
                     )
 
-            if node.schema not in self.schemas:
+            if node.schema not in self.filter_schemas(self.schemas, partial=partial):
                 raise InvalidSchemaError(
                     f"Unknown schema name(s): {node.schema}"
                 )
@@ -191,6 +191,32 @@ class Sync(Base, metaclass=Singleton):
                     raise PrimaryKeyNotFoundError(
                         f"No primary key(s) for base table: {table}"
                     )
+    
+    def filter_schemas(self, schemas: list, partial: bool = False) -> list:
+        if (schemas == None) or (len(schemas) == 0) or (not partial):
+            return schemas
+        extracted_schemas = self.extract_schemas(self.nodes)
+        updated_schemas = []
+        for schema in schemas:
+            if (schema in extracted_schemas):
+                updated_schemas.append(schema)
+        return updated_schemas
+    
+    def extract_schemas(self, nodes: dict) -> list:
+        if nodes is None:
+            return nodes
+        flat_schemas = []
+        queue = []
+        queue.append(nodes)
+        while(len(queue) != 0):
+            tempNode = queue.pop()
+            if tempNode != None:
+                if "schema" in tempNode and len(tempNode["schema"]):
+                    flat_schemas.append(tempNode["schema"])
+                if "children" in tempNode and len(tempNode["children"]):
+                    for node in tempNode["children"]:
+                        queue.append(node)
+        return list(set(flat_schemas))
 
     def analyze(self) -> None:
         for node in self.tree.traverse_breadth_first():
@@ -252,13 +278,13 @@ class Sync(Base, metaclass=Singleton):
             routing=self.routing,
         )
 
-    def setup(self) -> None:
+    def setup(self, partial:bool = False) -> None:
         """Create the database triggers and replication slot."""
 
         join_queries: bool = settings.JOIN_QUERIES
         self.teardown(drop_view=False)
 
-        for schema in self.schemas:
+        for schema in self.filter_schemas(self.schemas, partial=partial):
             self.create_function(schema)
             tables: Set = set()
             # tables with user defined foreign keys
@@ -295,7 +321,7 @@ class Sync(Base, metaclass=Singleton):
                 )
         self.create_replication_slot(self.__name)
 
-    def teardown(self, drop_view: bool = True) -> None:
+    def teardown(self, drop_view: bool = True, partial: bool = False) -> None:
         """Drop the database triggers and replication slot."""
 
         join_queries: bool = settings.JOIN_QUERIES
@@ -309,7 +335,7 @@ class Sync(Base, metaclass=Singleton):
 
         self.redis.delete()
 
-        for schema in self.schemas:
+        for schema in self.filter_schemas(self.schemas, partial=partial):
             tables: Set = set()
             for node in self.tree.traverse_breadth_first():
                 tables |= set(
