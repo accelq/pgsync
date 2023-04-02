@@ -842,6 +842,8 @@ class Sync(Base, metaclass=Singleton):
         # table and force a re-sync.
         if payload.table not in self.tree.tables:
             return
+        if payload.schema not in self.filter_schemas(self.schemas, partial=True):
+            return
 
         node: Node = self.tree.get_node(payload.table, payload.schema)
 
