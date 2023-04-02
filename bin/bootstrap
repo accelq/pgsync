@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 """PGSync bootstrap."""
+import os, sys
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 import logging
-
 import click
 
 from pgsync.sync import Sync
