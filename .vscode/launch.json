@@ -10,7 +10,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/bootstrap",
             "console": "integratedTerminal",
-            "args": ["--config", "C:\\accelq\\AQReporting\\examples\\singleSchema.json", "-t"],
+            "args": ["--config", "C:\\accelq\\AQReporting\\examples\\testCases.json", "-t"],
             "autoReload": {
               "enable": true
             }
@@ -21,7 +21,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/bootstrap",
             "console": "integratedTerminal",
-            "args": ["--config", "C:\\accelq\\AQReporting\\examples\\singleSchema.json", "-t", "-p"],
+            "args": ["--config", "C:\\accelq\\AQReporting\\examples\\testCases.json", "-t", "-p"],
             "autoReload": {
               "enable": true
             }
@@ -32,7 +32,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/bootstrap",
             "console": "integratedTerminal",
-            "args": ["--config", "C:\\accelq\\AQReporting\\examples\\singleSchema.json"],
+            "args": ["--config", "C:\\accelq\\AQReporting\\examples\\testCases.json"],
             "autoReload": {
               "enable": true
             }
@@ -43,7 +43,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/bootstrap",
             "console": "integratedTerminal",
-            "args": ["--config", "C:\\accelq\\AQReporting\\examples\\singleSchema.json", "-p"],
+            "args": ["--config", "C:\\accelq\\AQReporting\\examples\\testCases.json", "-p"],
             "autoReload": {
               "enable": true
             }
@@ -54,7 +54,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/pgsync",
             "console": "integratedTerminal",
-            "args": ["--config", "C:\\accelq\\AQReporting\\examples\\singleSchema.json"],
+            "args": ["--config", "C:\\accelq\\AQReporting\\examples\\testCases.json"],
             "autoReload": {
               "enable": true
             }
