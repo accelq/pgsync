@@ -59,5 +59,26 @@
               "enable": true
             }
         },
+        {
+          "name": "PGSync Test Full",
+          "type": "python",
+          "request": "launch",
+          "program": "${workspaceFolder}/setup.py",
+          "console": "integratedTerminal",
+          "args": ["test"],
+          "autoReload": {
+            "enable": true
+          }
+      },
+      {
+          "name": "PGSync Test Quick",
+          "type": "python",
+          "request": "launch",
+          "program": "${workspaceFolder}/tests/test_sync.py",
+          "console": "integratedTerminal",
+          "autoReload": {
+            "enable": true
+          }
+      },
     ]
 }
