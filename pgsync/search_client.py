@@ -199,7 +199,10 @@ class SearchClient(object):
             ):
                 self.doc_count += 1
         if refresh:
-            self.refresh(index)
+            try:
+                self.refresh(index)
+            except Exception as e:
+                logger.exception(f"Issue while refreshing {index} Index: {e}")
 
     def refresh(self, index: str) -> None:
         """Refresh the Elasticsearch/OpenSearch index."""
