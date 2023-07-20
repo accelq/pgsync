@@ -128,7 +128,7 @@ class SearchClient(object):
             raise_on_error or settings.ELASTICSEARCH_RAISE_ON_ERROR
         )
         ignore_status = ignore_status or settings.ELASTICSEARCH_IGNORE_STATUS
-
+        refresh = refresh or settings.ELASTICSEARCH_REFRESH_INDEX
         try:
             self._bulk(
                 index,
@@ -198,7 +198,8 @@ class SearchClient(object):
                 ignore_status=ignore_status,
             ):
                 self.doc_count += 1
-        self.refresh(index)
+        if refresh:
+            self.refresh(index)
 
     def refresh(self, index: str) -> None:
         """Refresh the Elasticsearch/OpenSearch index."""
