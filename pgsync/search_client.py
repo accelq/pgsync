@@ -198,10 +198,11 @@ class SearchClient(object):
                 ignore_status=ignore_status,
             ):
                 self.doc_count += 1
+        self.refresh(index)
 
-    def refresh(self, indices: List[str]) -> None:
+    def refresh(self, index: str) -> None:
         """Refresh the Elasticsearch/OpenSearch index."""
-        self.__client.indices.refresh(index=indices)
+        self.__client.indices.refresh(index=index)
 
     def _search(self, index: str, table: str, fields: Optional[dict] = None):
         """
