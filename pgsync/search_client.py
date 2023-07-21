@@ -168,6 +168,7 @@ class SearchClient(object):
         ignore_status: Tuple[int],
     ):
         pause_time: int = settings.ELASTICSEARCH_SYNC_PAUSE or 0
+        refresh = True
         """Bulk index, update, delete docs to Elasticsearch/OpenSearch."""
         if settings.ELASTICSEARCH_STREAMING_BULK:
             for _ in self.streaming_bulk(
