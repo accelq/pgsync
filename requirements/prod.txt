@@ -25,11 +25,11 @@ click==8.1.5
     # via
     #   -r requirements/base.in
     #   black
-elasticsearch==7.13.4
+elasticsearch==8.8.2
     # via
     #   -r requirements/base.in
-    #   elasticsearch-dsl
-elasticsearch-dsl==7.4.1
+    #   elasticsearch-dsl-aq
+elasticsearch-dsl-aq==8.0.1
     # via -r requirements/base.in
 environs==9.5.0
     # via -r requirements/base.in
@@ -66,7 +66,7 @@ psycopg2-binary==2.9.6
 python-dateutil==2.8.2
     # via
     #   botocore
-    #   elasticsearch-dsl
+    #   elasticsearch-dsl-aq
     #   faker
     #   opensearch-dsl
     #   opensearch-py
@@ -86,7 +86,7 @@ s3transfer==0.6.1
     # via boto3
 six==1.16.0
     # via
-    #   elasticsearch-dsl
+    #   elasticsearch-dsl-aq
     #   opensearch-dsl
     #   opensearch-py
     #   python-dateutil

@@ -109,6 +109,9 @@ ELASTICSEARCH_SSL_VERSION = env.int("ELASTICSEARCH_SSL_VERSION", default=None)
 ELASTICSEARCH_STREAMING_BULK = env.bool(
     "ELASTICSEARCH_STREAMING_BULK", default=False
 )
+ELASTICSEARCH_REFRESH_BULK = env.bool(
+    "ELASTICSEARCH_REFRESH_BULK", default=False
+)
 # the size of the threadpool to use for the bulk requests
 ELASTICSEARCH_THREAD_COUNT = env.int("ELASTICSEARCH_THREAD_COUNT", default=4)
 # increase this if you are getting read request timeouts

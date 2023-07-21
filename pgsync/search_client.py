@@ -40,7 +40,7 @@ class SearchClient(object):
             self.__client: elasticsearch.Elasticsearch = get_search_client(
                 url,
                 client=elasticsearch.Elasticsearch,
-                connection_class=elasticsearch.RequestsHttpConnection,
+                connection_class=elasticsearch,
             )
             try:
                 self.major_version: int = int(
@@ -52,6 +52,7 @@ class SearchClient(object):
                 elasticsearch.helpers.streaming_bulk
             )
             self.parallel_bulk: Callable = elasticsearch.helpers.parallel_bulk
+            self.refresh_bulk: Callable = elasticsearch.helpers.bulk
             self.Search: Callable = elasticsearch_dsl.Search
             self.Bool: Callable = elasticsearch_dsl.query.Bool
             self.Q: Callable = elasticsearch_dsl.Q
@@ -182,6 +183,21 @@ class SearchClient(object):
                 raise_on_error=raise_on_error,
             ):
                 self.doc_count += 1
+        elif settings.ELASTICSEARCH_REFRESH_BULK:
+            # this is only for elasticsearch new bulk api
+            for _ in self.refresh_bulk(
+                self.__client,
+                actions,
+                thread_count=thread_count,
+                chunk_size=chunk_size,
+                max_chunk_bytes=max_chunk_bytes,
+                queue_size=queue_size,
+                refresh=refresh,
+                raise_on_exception=raise_on_exception,
+                raise_on_error=raise_on_error,
+                ignore_status=ignore_status,
+            ):
+                self.doc_count += 1
         else:
             # parallel bulk consumes more memory and is also more likely
             # to result in 429 errors.
@@ -262,7 +278,7 @@ class SearchClient(object):
         """Create Elasticsearch/OpenSearch setting and mapping if required."""
         body: dict = defaultdict(lambda: defaultdict(dict))
 
-        if not self.__client.indices.exists(index):
+        if not self.__client.indices.exists(index=index):
             if setting:
                 body.update(**{"settings": {"index": setting}})
 
@@ -350,7 +366,7 @@ def get_search_client(
     client: Union[opensearchpy.OpenSearch, elasticsearch.Elasticsearch],
     connection_class: Union[
         opensearchpy.RequestsHttpConnection,
-        elasticsearch.RequestsHttpConnection,
+        elasticsearch.Elasticsearch,
     ],
 ) -> Union[opensearchpy.OpenSearch, elasticsearch.Elasticsearch]:
     if settings.OPENSEARCH_AWS_HOSTED or settings.ELASTICSEARCH_AWS_HOSTED:
@@ -404,8 +420,29 @@ def get_search_client(
         ssl_context: Optional[Any] = settings.ELASTICSEARCH_SSL_CONTEXT
         ssl_show_warn: bool = settings.ELASTICSEARCH_SSL_SHOW_WARN
         # Transport
-        use_ssl: bool = settings.ELASTICSEARCH_USE_SSL
+        use_ssl: bool = settings.ELASTICSEARCH_USE_SSL # (Does not exists on elastic anymore 8.8.2)
         timeout: float = settings.ELASTICSEARCH_TIMEOUT
+        if settings.ELASTICSEARCH:
+            return client(
+                hosts=hosts,
+                http_auth=http_auth,
+                cloud_id=cloud_id,
+                api_key=api_key,
+                basic_auth=basic_auth,
+                bearer_auth=bearer_auth,
+                opaque_id=opaque_id,
+                http_compress=http_compress,
+                verify_certs=verify_certs,
+                ca_certs=ca_certs,
+                client_cert=client_cert,
+                client_key=client_key,
+                ssl_assert_hostname=ssl_assert_hostname,
+                ssl_assert_fingerprint=ssl_assert_fingerprint,
+                ssl_version=ssl_version,
+                ssl_context=ssl_context,
+                ssl_show_warn=ssl_show_warn,
+                timeout=timeout,
+            )
         return client(
             hosts=hosts,
             http_auth=http_auth,
