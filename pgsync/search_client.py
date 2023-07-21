@@ -52,7 +52,6 @@ class SearchClient(object):
                 elasticsearch.helpers.streaming_bulk
             )
             self.parallel_bulk: Callable = elasticsearch.helpers.parallel_bulk
-            self.refresh_bulk: Callable = elasticsearch.helpers.bulk
             self.Search: Callable = elasticsearch_dsl.Search
             self.Bool: Callable = elasticsearch_dsl.query.Bool
             self.Q: Callable = elasticsearch_dsl.Q
