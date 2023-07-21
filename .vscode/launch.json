@@ -11,6 +11,60 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true
-        }
+        },
+        {
+            "name": "Teardown",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/bootstrap",
+            "console": "integratedTerminal",
+            "args": ["--config", "C:\\accelq\\deployment\\storage\\aq_reporting\\schema\\invocare.json", "-t"],
+            "autoReload": {
+              "enable": true
+            }
+        },
+        {
+            "name": "Bootstrap",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/bootstrap",
+            "console": "integratedTerminal",
+            "args": ["--config", "C:\\accelq\\deployment\\storage\\aq_reporting\\schema\\invocare.json"],
+            "autoReload": {
+              "enable": true
+            }
+        },
+        {
+            "name": "Sync",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/pgsync",
+            "console": "integratedTerminal",
+            "args": ["--config", "C:\\accelq\\deployment\\storage\\aq_reporting\\schema\\invocare.json"],
+            "autoReload": {
+              "enable": true
+            }
+        },
+        {
+          "name": "PGSync Test Full",
+          "type": "python",
+          "request": "launch",
+          "program": "${workspaceFolder}/setup.py",
+          "console": "integratedTerminal",
+          "args": ["test"],
+          "autoReload": {
+            "enable": true
+          }
+      },
+      {
+          "name": "PGSync Test Quick",
+          "type": "python",
+          "request": "launch",
+          "program": "${workspaceFolder}/tests/test_sync.py",
+          "console": "integratedTerminal",
+          "autoReload": {
+            "enable": true
+          }
+      },
     ]
 }
