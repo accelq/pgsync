@@ -183,21 +183,6 @@ class SearchClient(object):
                 raise_on_error=raise_on_error,
             ):
                 self.doc_count += 1
-        elif settings.ELASTICSEARCH_REFRESH_BULK:
-            # this is only for elasticsearch new bulk api
-            for _ in self.refresh_bulk(
-                self.__client,
-                actions,
-                thread_count=thread_count,
-                chunk_size=chunk_size,
-                max_chunk_bytes=max_chunk_bytes,
-                queue_size=queue_size,
-                refresh=refresh,
-                raise_on_exception=raise_on_exception,
-                raise_on_error=raise_on_error,
-                ignore_status=ignore_status,
-            ):
-                self.doc_count += 1
         else:
             # parallel bulk consumes more memory and is also more likely
             # to result in 429 errors.
