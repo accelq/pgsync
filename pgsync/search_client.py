@@ -167,8 +167,6 @@ class SearchClient(object):
         raise_on_error: bool,
         ignore_status: Tuple[int],
     ):
-        pause_time: int = settings.ELASTICSEARCH_SYNC_PAUSE or 0
-        refresh = True
         """Bulk index, update, delete docs to Elasticsearch/OpenSearch."""
         if settings.ELASTICSEARCH_STREAMING_BULK:
             for _ in self.streaming_bulk(
@@ -201,12 +199,14 @@ class SearchClient(object):
                 ignore_status=ignore_status,
             ):
                 self.doc_count += 1
-        if pause_time > 0:
-            time.sleep(pause_time)
 
     def refresh(self, indices: List[str]) -> None:
         """Refresh the Elasticsearch/OpenSearch index."""
         self.__client.indices.refresh(index=indices)
+
+    def flush(self, indices: List[str]) -> None:
+        """Refresh the Elasticsearch/OpenSearch index."""
+        self.__client.indices.flush(index=indices)
 
     def _search(self, index: str, table: str, fields: Optional[dict] = None):
         """

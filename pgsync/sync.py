@@ -985,7 +985,7 @@ class Sync(Base, metaclass=Singleton):
             width=50,
         ) as bar:
             for i, (keys, row, primary_keys) in enumerate(
-                self.fetchmany(node._subquery)
+                self._fetchManyWithPause(node._subquery)
             ):
                 bar.update(1)
 
@@ -1023,6 +1023,21 @@ class Sync(Base, metaclass=Singleton):
                     doc["pipeline"] = self.pipeline
 
                 yield doc
+
+    def _fetchManyWithPause(self, query) -> Generator:
+        # todo return the data from fetchMany and then pause(pause is not defined)
+        fetch_result = self.fetchmany(query)
+        for i, result in enumerate(
+            fetch_result
+        ):
+            yield result
+            if (i % settings.QUERY_CHUNK_SIZE == 0) and settings.ELASTICSEARCH_SYNC_PAUSE != None:
+                if  settings.ELASTICSEARCH_SYNC_PAUSE == "flush":
+                    self.search_client.flush(indices=[self.index])
+                elif settings.ELASTICSEARCH_SYNC_PAUSE == "refresh":
+                    self.search_client.refresh(indices=[self.index])
+            
+
 
     @property
     def checkpoint(self) -> int:

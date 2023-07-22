@@ -113,7 +113,7 @@ ELASTICSEARCH_STREAMING_BULK = env.bool(
 ELASTICSEARCH_THREAD_COUNT = env.int("ELASTICSEARCH_THREAD_COUNT", default=4)
 
 # in between sync pauses
-ELASTICSEARCH_SYNC_PAUSE = env.int("ELASTICSEARCH_SYNC_PAUSE", default=0)
+ELASTICSEARCH_SYNC_PAUSE = env.str("ELASTICSEARCH_SYNC_PAUSE", default=None)
 # increase this if you are getting read request timeouts
 ELASTICSEARCH_TIMEOUT = env.float("ELASTICSEARCH_TIMEOUT", default=10)
 ELASTICSEARCH_USER = env.str("ELASTICSEARCH_USER", default=None)

@@ -18,7 +18,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/bootstrap",
             "console": "integratedTerminal",
-            "args": ["--config", "C:\\accelq\\deployment\\storage\\aq_reporting\\schema\\invocare.json", "-t"],
+            "args": ["--config", "C:\\accelq\\deployment\\storage\\aq_reporting\\schema\\recreo_schema.json", "-t"],
             "autoReload": {
               "enable": true
             }
@@ -29,7 +29,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/bootstrap",
             "console": "integratedTerminal",
-            "args": ["--config", "C:\\accelq\\deployment\\storage\\aq_reporting\\schema\\invocare.json"],
+            "args": ["--config", "C:\\accelq\\deployment\\storage\\aq_reporting\\schema\\recreo_schema.json"],
             "autoReload": {
               "enable": true
             }
@@ -40,7 +40,7 @@
             "request": "launch",
             "program": "${workspaceFolder}/bin/pgsync",
             "console": "integratedTerminal",
-            "args": ["--config", "C:\\accelq\\deployment\\storage\\aq_reporting\\schema\\invocare.json"],
+            "args": ["--config", "C:\\accelq\\deployment\\storage\\aq_reporting\\schema\\recreo_schema.json"],
             "autoReload": {
               "enable": true
             }
