@@ -10,6 +10,7 @@ import sys
 import time
 from collections import defaultdict
 from typing import AnyStr, Generator, List, Optional, Set
+import gc
 
 import click
 import sqlalchemy as sa
@@ -1031,6 +1032,7 @@ class Sync(Base, metaclass=Singleton):
             self.search_client.flush(indices=[self.index])
         elif settings.ELASTICSEARCH_SYNC_PAUSE == "refresh":
             self.search_client.refresh(indices=[self.index])
+        gc.collect()
             
 
 
