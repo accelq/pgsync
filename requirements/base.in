@@ -2,8 +2,8 @@
 black
 boto3
 click
-elasticsearch==7.13.4 # pin this to version 7.13.4 for compatibility with OpenSearch https://opensearch.org/docs/clients/index/
-elasticsearch-dsl>=6.0.0,<8.0.0
+elasticsearch==8.8.2 # pin this to version 7.13.4 for compatibility with OpenSearch https://opensearch.org/docs/clients/index/
+elasticsearch-dsl-aq>=6.0.0,<9.0.0
 environs
 faker
 opensearch-dsl>=2.0.1

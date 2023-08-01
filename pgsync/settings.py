@@ -126,7 +126,8 @@ ELASTICSEARCH_IGNORE_STATUS = env.list(
     "ELASTICSEARCH_IGNORE_STATUS", default=[404]
 )
 ELASTICSEARCH_IGNORE_STATUS = tuple(map(int, ELASTICSEARCH_IGNORE_STATUS))
-
+# will it perform refresh after each bulk sync
+ELASTICSEARCH_REFRESH_INDEX = env.bool("ELASTICSEARCH_REFRESH_INDEX", default=False)
 ELASTICSEARCH = env.bool("ELASTICSEARCH", default=True)
 OPENSEARCH = env.bool("OPENSEARCH", default=(not ELASTICSEARCH))
 OPENSEARCH_AWS_HOSTED = env.bool("OPENSEARCH_AWS_HOSTED", default=False)

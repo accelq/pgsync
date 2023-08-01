@@ -30,7 +30,7 @@ class TestSearchClient(object):
                     mock_search_client.assert_called_once_with(
                         url,
                         client=elasticsearch.Elasticsearch,
-                        connection_class=elasticsearch.RequestsHttpConnection,
+                        connection_class=elasticsearch,
                     )
 
     def test_get_search_client(self, mocker):
@@ -49,7 +49,7 @@ class TestSearchClient(object):
                 get_search_client(
                     url,
                     client=elasticsearch.Elasticsearch,
-                    connection_class=elasticsearch.RequestsHttpConnection,
+                    connection_class=elasticsearch,
                 )
                 ssl_assert_hostname = (
                     settings.ELASTICSEARCH_SSL_ASSERT_HOSTNAME
@@ -75,7 +75,6 @@ class TestSearchClient(object):
                     ssl_version=settings.ELASTICSEARCH_SSL_VERSION,
                     ssl_context=settings.ELASTICSEARCH_SSL_CONTEXT,
                     ssl_show_warn=settings.ELASTICSEARCH_SSL_SHOW_WARN,
-                    use_ssl=settings.ELASTICSEARCH_USE_SSL,
                     timeout=settings.ELASTICSEARCH_TIMEOUT,
                 )
 
@@ -101,7 +100,7 @@ class TestSearchClient(object):
                                 url,
                                 client=elasticsearch.Elasticsearch,
                                 connection_class=(
-                                    elasticsearch.RequestsHttpConnection
+                                    elasticsearch.Elasticsearch
                                 ),
                             )
                             mock_search_client.assert_called_once_with(
@@ -110,6 +109,6 @@ class TestSearchClient(object):
                                 use_ssl=True,
                                 verify_certs=True,
                                 connection_class=(
-                                    elasticsearch.RequestsHttpConnection
+                                    elasticsearch.Elasticsearch
                                 ),
                             )

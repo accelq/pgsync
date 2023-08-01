@@ -40,7 +40,7 @@ class SearchClient(object):
             self.__client: elasticsearch.Elasticsearch = get_search_client(
                 url,
                 client=elasticsearch.Elasticsearch,
-                connection_class=elasticsearch.RequestsHttpConnection,
+                connection_class=elasticsearch,
             )
             try:
                 self.major_version: int = int(
@@ -128,7 +128,7 @@ class SearchClient(object):
             raise_on_error or settings.ELASTICSEARCH_RAISE_ON_ERROR
         )
         ignore_status = ignore_status or settings.ELASTICSEARCH_IGNORE_STATUS
-
+        refresh = refresh or settings.ELASTICSEARCH_REFRESH_INDEX
         try:
             self._bulk(
                 index,
@@ -198,10 +198,15 @@ class SearchClient(object):
                 ignore_status=ignore_status,
             ):
                 self.doc_count += 1
+        if refresh:
+            try:
+                self.refresh(index)
+            except Exception as e:
+                logger.exception(f"Issue while refreshing {index} Index: {e}")
 
-    def refresh(self, indices: List[str]) -> None:
+    def refresh(self, index: str) -> None:
         """Refresh the Elasticsearch/OpenSearch index."""
-        self.__client.indices.refresh(index=indices)
+        self.__client.indices.refresh(index=index)
 
     def _search(self, index: str, table: str, fields: Optional[dict] = None):
         """
@@ -257,7 +262,7 @@ class SearchClient(object):
         """Create Elasticsearch/OpenSearch setting and mapping if required."""
         body: dict = defaultdict(lambda: defaultdict(dict))
 
-        if not self.__client.indices.exists(index):
+        if not self.__client.indices.exists(index=index):
             if setting:
                 body.update(**{"settings": {"index": setting}})
 
@@ -345,7 +350,7 @@ def get_search_client(
     client: Union[opensearchpy.OpenSearch, elasticsearch.Elasticsearch],
     connection_class: Union[
         opensearchpy.RequestsHttpConnection,
-        elasticsearch.RequestsHttpConnection,
+        elasticsearch.Elasticsearch,
     ],
 ) -> Union[opensearchpy.OpenSearch, elasticsearch.Elasticsearch]:
     if settings.OPENSEARCH_AWS_HOSTED or settings.ELASTICSEARCH_AWS_HOSTED:
@@ -399,8 +404,29 @@ def get_search_client(
         ssl_context: Optional[Any] = settings.ELASTICSEARCH_SSL_CONTEXT
         ssl_show_warn: bool = settings.ELASTICSEARCH_SSL_SHOW_WARN
         # Transport
-        use_ssl: bool = settings.ELASTICSEARCH_USE_SSL
+        use_ssl: bool = settings.ELASTICSEARCH_USE_SSL # (Does not exists on elastic anymore 8.8.2)
         timeout: float = settings.ELASTICSEARCH_TIMEOUT
+        if settings.ELASTICSEARCH:
+            return client(
+                hosts=hosts,
+                http_auth=http_auth,
+                cloud_id=cloud_id,
+                api_key=api_key,
+                basic_auth=basic_auth,
+                bearer_auth=bearer_auth,
+                opaque_id=opaque_id,
+                http_compress=http_compress,
+                verify_certs=verify_certs,
+                ca_certs=ca_certs,
+                client_cert=client_cert,
+                client_key=client_key,
+                ssl_assert_hostname=ssl_assert_hostname,
+                ssl_assert_fingerprint=ssl_assert_fingerprint,
+                ssl_version=ssl_version,
+                ssl_context=ssl_context,
+                ssl_show_warn=ssl_show_warn,
+                timeout=timeout,
+            )
         return client(
             hosts=hosts,
             http_auth=http_auth,

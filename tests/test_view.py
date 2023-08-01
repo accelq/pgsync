@@ -193,10 +193,6 @@ class TestView(object):
             "name": "my_index",
             "unique": True,
             "column_names": ["isbn"],
-            "include_columns": [],
-            "dialect_options": {
-                "postgresql_include": [],
-            },
         }
         connection.engine.execute(DropIndex("my_index"))
         indices = sa.inspect(connection.engine).get_indexes(
