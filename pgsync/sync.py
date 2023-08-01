@@ -11,6 +11,7 @@ import time
 from collections import defaultdict
 from typing import AnyStr, Generator, List, Optional, Set
 import gc
+import tracemalloc
 
 import click
 import sqlalchemy as sa
@@ -975,7 +976,6 @@ class Sync(Base, metaclass=Singleton):
             compiled_query(node._subquery, "Query")
 
         count: int = self.fetchcount(node._subquery)
-
         with click.progressbar(
             length=count,
             show_pos=True,
@@ -1034,6 +1034,28 @@ class Sync(Base, metaclass=Singleton):
             self.search_client.refresh(indices=[self.index])
         gc.collect()
             
+    def traceloc(self):
+        # Take a snapshot of memory allocations
+        snapshot = tracemalloc.take_snapshot()
+
+        # Print the top 10 lines consuming the most memory
+        top_stats = snapshot.statistics('lineno')
+        print("Top 10 lines consuming the most memory:")
+        for stat in top_stats[:10]:
+            print(stat)
+
+        # Optional: Display the difference in memory consumption since Tracemalloc started
+        current, peak = tracemalloc.get_traced_memory()
+        print(f"Current memory usage: {current / 10**6} MB")
+        print(f"Peak memory usage: {peak / 10**6} MB")
+
+        # Disable Tracemalloc
+        tracemalloc.stop()
+
+
+
+
+
 
 
     @property
@@ -1236,9 +1258,11 @@ class Sync(Base, metaclass=Singleton):
         txmax: int = self.txid_current
         logger.debug(f"pull txmin: {txmin} - txmax: {txmax}")
         # forward pass sync
+        # tracemalloc.start()
         self.search_client.bulk(
             self.index, self.sync(txmin=txmin, txmax=txmax)
         )
+        # self.traceloc()
         # now sync up to txmax to capture everything we may have missed
         self.logical_slot_changes(txmin=txmin, txmax=txmax, upto_nchanges=None)
         self.checkpoint: int = txmax or self.txid_current

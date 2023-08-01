@@ -27,7 +27,7 @@ PG_DRIVER = env.str("PG_DRIVER", default="psycopg2")
 POLL_TIMEOUT = env.float("POLL_TIMEOUT", default=0.1)
 QUERY_LITERAL_BINDS = env.bool("QUERY_LITERAL_BINDS", default=False)
 # db query chunk size (how many records to fetch at a time)
-QUERY_CHUNK_SIZE = env.int("QUERY_CHUNK_SIZE", default=10000)
+QUERY_CHUNK_SIZE = env.int("QUERY_CHUNK_SIZE", default=1000)
 FILTER_CHUNK_SIZE = env.int("FILTER_CHUNK_SIZE", default=5000)
 # replication slot cleanup interval (in secs)
 REPLICATION_SLOT_CLEANUP_INTERVAL = env.float(

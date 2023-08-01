@@ -30,7 +30,7 @@ class TestSearchClient(object):
                     mock_search_client.assert_called_once_with(
                         url,
                         client=elasticsearch.Elasticsearch,
-                        connection_class=elasticsearch.RequestsHttpConnection,
+                        connection_class=elasticsearch,
                     )
 
     def test_get_search_client(self, mocker):
@@ -49,7 +49,7 @@ class TestSearchClient(object):
                 get_search_client(
                     url,
                     client=elasticsearch.Elasticsearch,
-                    connection_class=elasticsearch.RequestsHttpConnection,
+                    connection_class=elasticsearch,
                 )
                 ssl_assert_hostname = (
                     settings.ELASTICSEARCH_SSL_ASSERT_HOSTNAME

@@ -27,11 +27,11 @@ click==8.1.6
     #   black
 coverage[toml]==7.2.7
     # via pytest-cov
-elasticsearch==7.13.4
+elasticsearch==8.8.2
     # via
     #   -r requirements/base.in
     #   elasticsearch-dsl
-elasticsearch-dsl==7.4.1
+elasticsearch-dsl-aq==8.0.1
     # via -r requirements/base.in
 environs==9.5.0
     # via -r requirements/base.in

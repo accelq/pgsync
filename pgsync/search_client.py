@@ -41,7 +41,7 @@ class SearchClient(object):
             self.__client: elasticsearch.Elasticsearch = get_search_client(
                 url,
                 client=elasticsearch.Elasticsearch,
-                connection_class=elasticsearch.RequestsHttpConnection,
+                connection_class=elasticsearch,
             )
             try:
                 self.major_version: int = int(
@@ -262,7 +262,7 @@ class SearchClient(object):
         """Create Elasticsearch/OpenSearch setting and mapping if required."""
         body: dict = defaultdict(lambda: defaultdict(dict))
 
-        if not self.__client.indices.exists(index):
+        if not self.__client.indices.exists(index=index):
             if setting:
                 body.update(**{"settings": {"index": setting}})
 
@@ -350,7 +350,7 @@ def get_search_client(
     client: Union[opensearchpy.OpenSearch, elasticsearch.Elasticsearch],
     connection_class: Union[
         opensearchpy.RequestsHttpConnection,
-        elasticsearch.RequestsHttpConnection,
+        elasticsearch.Elasticsearch,
     ],
 ) -> Union[opensearchpy.OpenSearch, elasticsearch.Elasticsearch]:
     if settings.OPENSEARCH_AWS_HOSTED or settings.ELASTICSEARCH_AWS_HOSTED:
@@ -406,6 +406,27 @@ def get_search_client(
         # Transport
         use_ssl: bool = settings.ELASTICSEARCH_USE_SSL
         timeout: float = settings.ELASTICSEARCH_TIMEOUT
+        if settings.ELASTICSEARCH:
+            return client(
+                hosts=hosts,
+                http_auth=http_auth,
+                cloud_id=cloud_id,
+                api_key=api_key,
+                basic_auth=basic_auth,
+                bearer_auth=bearer_auth,
+                opaque_id=opaque_id,
+                http_compress=http_compress,
+                verify_certs=verify_certs,
+                ca_certs=ca_certs,
+                client_cert=client_cert,
+                client_key=client_key,
+                ssl_assert_hostname=ssl_assert_hostname,
+                ssl_assert_fingerprint=ssl_assert_fingerprint,
+                ssl_version=ssl_version,
+                ssl_context=ssl_context,
+                ssl_show_warn=ssl_show_warn,
+                timeout=timeout,
+            )
         return client(
             hosts=hosts,
             http_auth=http_auth,
