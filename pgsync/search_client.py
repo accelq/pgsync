@@ -1,7 +1,6 @@
 """PGSync SearchClient helper."""
 import logging
 from collections import defaultdict
-import time
 from typing import Any, Callable, Dict, Iterable, List, Optional, Tuple, Union
 
 import boto3
