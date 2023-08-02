@@ -839,8 +839,11 @@ class Base(object):
                 stream_results=stream_results
             ).execute(statement.select())
             for partition in result.partitions(chunk_size):
+                i = 0
                 for keys, row, *primary_keys in partition:
-                    yield keys, row, primary_keys
+                    last: bool = i == len(partition) - 1
+                    yield keys, row, primary_keys, last
+                    i += 1
             result.close()
         self.engine.clear_compiled_cache()
 
