@@ -1,4 +1,9 @@
-"""PGSync settings."""
+"""PGSync settings
+
+This module contains the settings for PGSync.
+It reads environment variables from a .env file and sets default values for each variable.
+The variables are used to configure various parameters such as block size, checkpoint path, polling interval, etc.
+"""
 import logging
 import logging.config
 import os
@@ -133,6 +138,9 @@ ELASTICSEARCH_IGNORE_STATUS = tuple(map(int, ELASTICSEARCH_IGNORE_STATUS))
 ELASTICSEARCH = env.bool("ELASTICSEARCH", default=True)
 OPENSEARCH = env.bool("OPENSEARCH", default=(not ELASTICSEARCH))
 OPENSEARCH_AWS_HOSTED = env.bool("OPENSEARCH_AWS_HOSTED", default=False)
+OPENSEARCH_AWS_SERVERLESS = env.bool(
+    "OPENSEARCH_AWS_SERVERLESS", default=False
+)  # noqa E501
 
 # Postgres:
 PG_HOST = env.str("PG_HOST", default="localhost")
