@@ -836,7 +836,8 @@ class Base(object):
         stream_results = stream_results or STREAM_RESULTS
         with self.engine.connect() as conn:
             result = conn.execution_options(
-                stream_results=stream_results
+                stream_results=stream_results,
+                max_row_buffer=chunk_size
             ).execute(statement.select())
             for partition in result.partitions(chunk_size):
                 i = 0
