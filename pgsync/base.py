@@ -28,6 +28,7 @@ from .settings import (
     PG_SSLMODE,
     PG_SSLROOTCERT,
     QUERY_CHUNK_SIZE,
+    MAX_ROW_BUFFER,
     STREAM_RESULTS,
 )
 from .trigger import CREATE_TRIGGER_TEMPLATE
@@ -862,11 +863,12 @@ class Base(object):
         stream_results: Optional[bool] = None,
     ):
         chunk_size = chunk_size or QUERY_CHUNK_SIZE
+        max_row_buffer = MAX_ROW_BUFFER
         stream_results = stream_results or STREAM_RESULTS
         with self.engine.connect() as conn:
             result = conn.execution_options(
                 stream_results=stream_results,
-                max_row_buffer=chunk_size
+                max_row_buffer=max_row_buffer
             ).execute(statement.select())
             for partition in result.partitions(chunk_size):
                 i = 0
