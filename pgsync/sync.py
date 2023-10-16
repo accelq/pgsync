@@ -1007,7 +1007,7 @@ class Sync(Base, metaclass=Singleton):
                 # ensure the data is proper json or ignore and log error
                 try:
                     data = json.dumps(row)
-                    data = json.loads(data)
+                    row = json.loads(data)
                 except:
                     print(f"{(i+1)}) is not a Proper JSON")
                     print(f"pkeys: {primary_keys}, index: {self.index}")
