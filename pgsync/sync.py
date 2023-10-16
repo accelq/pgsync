@@ -1004,7 +1004,16 @@ class Sync(Base, metaclass=Singleton):
                 row: dict = Transform.transform(row, self.nodes)
 
                 row[META] = Transform.get_primary_keys(keys)
-
+                # ensure the data is proper json or ignore and log error
+                try:
+                    data = json.dumps(row)
+                    data = json.loads(data)
+                except:
+                    print(f"{(i+1)}) is not a Proper JSON")
+                    print(f"pkeys: {primary_keys}, index: {self.index}")
+                    pprint.pprint(row)
+                    print("-" * 10)
+                    continue
                 if self.verbose:
                     print(f"{(i+1)})")
                     print(f"pkeys: {primary_keys}")
