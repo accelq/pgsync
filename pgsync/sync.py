@@ -1008,6 +1008,7 @@ class Sync(Base, metaclass=Singleton):
                 if self.verbose:
                     print(f"{(i+1)})")
                     print(f"pkeys: {primary_keys}")
+                    print(f"Plugins: {self.plugins}")
                     pprint.pprint(row)
                     print("-" * 10)
 
@@ -1028,6 +1029,10 @@ class Sync(Base, metaclass=Singleton):
 
                 if self._plugins:
                     doc = next(self._plugins.transform([doc]))
+                    if self.verbose:
+                        print("Transformed: ")
+                        pprint.pprint(doc)
+                        print("-" * 10)
                     if not doc:
                         continue
 

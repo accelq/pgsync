@@ -1,17 +1,60 @@
 
 {
-    // Use IntelliSense to learn about possible attributes.
-    // Hover to view descriptions of existing attributes.
-    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Current File",
+            "name": "Teardown",
             "type": "python",
             "request": "launch",
-            "program": "${file}",
+            "program": "${workspaceFolder}/bin/bootstrap",
             "console": "integratedTerminal",
-            "justMyCode": true
+            "args": ["--config", "C:\\accelq\\deployment\\storage\\aq_reporting\\schema\\recreo_schema.json", "-t"],
+            "autoReload": {
+              "enable": true
+            }
         },
+        {
+            "name": "Bootstrap",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/bootstrap",
+            "console": "integratedTerminal",
+            "args": ["--config", "C:\\accelq\\deployment\\storage\\aq_reporting\\schema\\recreo_schema.json"],
+            "autoReload": {
+              "enable": true
+            }
+        },
+        {
+            "name": "Sync",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/bin/pgsync",
+            "console": "integratedTerminal",
+            "args": ["--config", "C:\\accelq\\deployment\\storage\\aq_reporting\\schema\\accelq_schema.json"],
+            "autoReload": {
+              "enable": true
+            }
+        },
+        {
+          "name": "PGSync Test Full",
+          "type": "python",
+          "request": "launch",
+          "program": "${workspaceFolder}/setup.py",
+          "console": "integratedTerminal",
+          "args": ["test"],
+          "autoReload": {
+            "enable": true
+          }
+      },
+      {
+          "name": "PGSync Test Quick",
+          "type": "python",
+          "request": "launch",
+          "program": "${workspaceFolder}/tests/test_sync.py",
+          "console": "integratedTerminal",
+          "autoReload": {
+            "enable": true
+          }
+      }
     ]
 }
