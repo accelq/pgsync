@@ -39,6 +39,7 @@ NODE_ATTRIBUTES = [
     "schema",
     "table",
     "transform",
+    "track"
 ]
 
 # Relationship attributes
